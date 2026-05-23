@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -481,6 +482,15 @@ score: 5=very hot, 4=interested, 3=neutral, 2=cold, 1=not relevant. If a field i
   setUI('idle');
 }
 
+function deleteLead(idx) {
+  if (!confirm('Delete this lead?')) return;
+  leads.splice(idx, 1);
+  localStorage.setItem('cz_leads_v1', JSON.stringify(leads));
+  updateBadge();
+  renderLeads();
+  toast('Lead deleted');
+}
+
 function renderLeads() {
   const today = new Date().toLocaleDateString('en-US');
   document.getElementById('sTotal').textContent = leads.length;
@@ -488,11 +498,13 @@ function renderLeads() {
   document.getElementById('sToday').textContent = leads.filter(l=>l.date===today).length;
   const el = document.getElementById('leadsList');
   if (!leads.length) {
-    el.innerHTML='<div class="empty-state"><div class="empty-icon">📭</div>No leads recorded yet.<br>Head to Record tab to start.</div>';
+    el.innerHTML='<div class="empty-state"><div class="empty-icon">\u{1F4EB}</div>No leads recorded yet.<br>Head to Record tab to start.</div>';
+    document.getElementById('exportBtn').disabled = true;
     return;
   }
-  el.innerHTML = [...leads].reverse().map(l=>{
-    const sc = Math.max(1,Math.min(5,l.score||3));
+  const reversed = [...leads].map((l,i)=>({...l,_idx:i})).reverse();
+  el.innerHTML = reversed.map(l=>{
+    const sc = Math.max(1,Math.min(5,parseInt(l.score)||3));
     const cls = 's'+sc;
     const name = [l.firstName,l.lastName].filter(Boolean).join(' ')||'—';
     const meta = [l.jobTitle,l.company].filter(Boolean).join(' · ')||'—';
@@ -504,9 +516,10 @@ function renderLeads() {
         ${l.notes?`<div class="lead-notes">${l.notes}</div>`:''}
         <div class="lead-time">${l.time||''} ${l.conf?'· '+l.conf:''}</div>
       </div>
+      <button onclick="deleteLead(${l._idx})" style="background:transparent;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:4px 10px;flex-shrink:0;line-height:1;" title="Delete">&#x2715;</button>
     </div>`;
   }).join('');
-  document.getElementById('exportBtn').disabled = !leads.length;
+  document.getElementById('exportBtn').disabled = false;
 }
 
 function updateBadge() {
@@ -515,25 +528,37 @@ function updateBadge() {
 
 function exportExcel() {
   if (!leads.length) { toast('No leads to export'); return; }
-  const rows = leads.map(l=>({
-    'First Name': l.firstName||'',
-    'Last Name': l.lastName||'',
-    'Company': l.company||'',
-    'Job Title': l.jobTitle||'',
-    'Lead Score': l.score||'',
-    'Discussion Notes': l.notes||'',
-    'Time': l.time||'',
-    'Date': l.date||'',
-    'Conference': l.conf||''
-  }));
-  const ws = XLSX.utils.json_to_sheet(rows);
-  ws['!cols'] = [14,14,20,20,10,40,10,12,20].map(w=>({wch:w}));
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Leads');
-  const conf = (localStorage.getItem('cz_conf')||'Conference').replace(/\s+/g,'_');
-  const date = new Date().toLocaleDateString('en-US').replace(/\//g,'-');
-  XLSX.writeFile(wb, `CZ_Leads_${conf}_${date}.xlsx`);
-  toast('Excel file downloaded ✓');
+  console.log('Exporting leads:', JSON.stringify(leads));
+  const rows = leads.map(l=>{
+    console.log('Lead row:', l);
+    return {
+      'First Name': String(l.firstName||'undefined'),
+      'Last Name': String(l.lastName||'undefined'),
+      'Company': String(l.company||'undefined'),
+      'Job Title': String(l.jobTitle||'undefined'),
+      'Lead Score': String(l.score||'undefined'),
+      'Discussion Notes': String(l.notes||'undefined'),
+      'Time': String(l.time||'undefined'),
+      'Date': String(l.date||'undefined'),
+      'Conference': String(l.conf||'undefined')
+    };
+  });
+  console.log('Rows to export:', rows);
+  try {
+    const ws = XLSX.utils.json_to_sheet(rows);
+    ws['!cols'] = [14,14,20,20,10,40,10,12,20].map(w=>({wch:w}));
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Leads');
+    const conf = (localStorage.getItem('cz_conf')||'Conference').replace(/\s+/g,'_');
+    const date = new Date().toLocaleDateString('en-US').replace(/\//g,'-');
+    const filename = `CZ_Leads_${conf}_${date}.xlsx`;
+    console.log('Saving as:', filename);
+    XLSX.writeFile(wb, filename);
+    toast('Excel downloaded: ' + leads.length + ' leads ✓');
+  } catch(e) {
+    console.error('Export error:', e);
+    toast('Export error: ' + e.message);
+  }
 }
 
 function clearAll() {
