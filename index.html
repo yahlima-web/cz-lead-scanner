@@ -10,12 +10,10 @@
 <meta name="theme-color" content="#060d1a">
 <link rel="manifest" href="manifest.json">
 <title>CZ Lead Scanner</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #060d1a;
-  --bg2: #0c1829;
   --surface: #111e33;
   --surface2: #172540;
   --border: rgba(255,255,255,0.07);
@@ -34,253 +32,109 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow: hidden; }
-
 #app { height: 100vh; display: flex; flex-direction: column; position: relative; }
-
-/* BG GRID */
 #app::before {
-  content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 0;
-  background-image:
-    linear-gradient(rgba(0,194,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,194,255,0.03) 1px, transparent 1px);
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(0,194,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,194,255,0.03) 1px, transparent 1px);
   background-size: 40px 40px;
 }
-
-/* TOPBAR */
 .topbar {
   position: relative; z-index: 10;
   display: flex; align-items: center; justify-content: space-between;
   padding: 48px 20px 14px;
   background: linear-gradient(180deg, rgba(6,13,26,0.98) 0%, rgba(6,13,26,0.9) 100%);
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
 }
 .logo { display: flex; align-items: center; gap: 10px; }
 .logo-mark {
   width: 32px; height: 32px; border-radius: 8px;
   background: linear-gradient(135deg, var(--accent2), var(--accent));
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.5px;
+  font-size: 14px; font-weight: 700; color: #fff;
 }
-.logo-text { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
-.logo-sub { font-size: 11px; color: var(--text2); font-weight: 400; }
-.badge {
-  background: var(--accent-glow); color: var(--accent);
-  border: 1px solid rgba(0,194,255,0.2);
-  font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace;
-  padding: 4px 10px; border-radius: 20px; letter-spacing: 0.3px;
-}
-
-/* TABS */
-.tabs {
-  display: flex; position: relative; z-index: 10;
-  background: var(--bg); border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.tab {
-  flex: 1; padding: 11px 0; font-size: 12px; font-weight: 500;
-  color: var(--text3); text-align: center; cursor: pointer;
-  border-bottom: 2px solid transparent; transition: all 0.2s;
-  letter-spacing: 0.3px; text-transform: uppercase;
-}
+.logo-text { font-size: 15px; font-weight: 600; color: var(--text); }
+.logo-sub { font-size: 11px; color: var(--text2); }
+.badge { background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(0,194,255,0.2); font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace; padding: 4px 10px; border-radius: 20px; }
+.tabs { display: flex; position: relative; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.tab { flex: 1; padding: 11px 0; font-size: 12px; font-weight: 500; color: var(--text3); text-align: center; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; letter-spacing: 0.3px; text-transform: uppercase; }
 .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-/* PAGES */
 .page { flex: 1; overflow-y: auto; display: none; position: relative; z-index: 5; }
 .page.active { display: block; }
 
 /* RECORD PAGE */
 .rec-page { padding: 20px; }
-
-.template-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  margin-bottom: 18px;
-  position: relative; overflow: hidden;
-}
-.template-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--accent2), var(--accent));
-}
-.template-label {
-  font-size: 10px; font-weight: 600; color: var(--accent);
-  letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 8px;
-}
+.template-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 18px; position: relative; overflow: hidden; }
+.template-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent2), var(--accent)); }
+.template-label { font-size: 10px; font-weight: 600; color: var(--accent); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 8px; }
 .template-text { font-size: 13px; color: var(--text2); line-height: 1.7; }
 .template-text span { color: var(--text); font-weight: 500; }
-
-/* RECORD CENTER */
 .rec-center { display: flex; flex-direction: column; align-items: center; padding: 16px 0 20px; }
-.rec-outer {
-  width: 148px; height: 148px; border-radius: 50%;
-  border: 1px solid var(--border2);
-  display: flex; align-items: center; justify-content: center;
-  position: relative; margin-bottom: 18px;
-}
-.rec-outer.recording {
-  border-color: rgba(255,77,106,0.4);
-  animation: outerPulse 1.5s ease-in-out infinite;
-}
+.rec-outer { width: 148px; height: 148px; border-radius: 50%; border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 18px; transition: all 0.3s; }
+.rec-outer.recording { border-color: rgba(255,77,106,0.4); animation: outerPulse 1.5s ease-in-out infinite; }
 .rec-outer.processing { border-color: rgba(0,194,255,0.4); }
-@keyframes outerPulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(255,77,106,0.2); }
-  50% { box-shadow: 0 0 0 16px rgba(255,77,106,0); }
-}
-.rec-btn {
-  width: 108px; height: 108px; border-radius: 50%;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  cursor: pointer; gap: 5px; transition: all 0.18s; color: var(--text);
-  position: relative; overflow: hidden;
-}
-.rec-btn::after {
-  content: ''; position: absolute; inset: 0; border-radius: 50%;
-  background: radial-gradient(circle at center, rgba(0,194,255,0.08), transparent 70%);
-  opacity: 0; transition: opacity 0.2s;
-}
-.rec-btn:active::after { opacity: 1; }
+@keyframes outerPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,77,106,0.2)} 50%{box-shadow:0 0 0 16px rgba(255,77,106,0)} }
+.rec-btn { width: 108px; height: 108px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border2); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; gap: 5px; transition: all 0.18s; color: var(--text); }
 .rec-btn.recording { background: rgba(255,77,106,0.15); border-color: rgba(255,77,106,0.3); }
 .rec-btn.processing { background: var(--accent-glow); border-color: rgba(0,194,255,0.2); }
-.rec-btn-icon { font-size: 30px; transition: all 0.2s; line-height: 1; }
+.rec-btn-icon { font-size: 30px; line-height: 1; }
 .rec-btn-lbl { font-size: 10px; font-weight: 600; color: var(--text2); letter-spacing: 0.8px; text-transform: uppercase; }
-
-.rec-timer {
-  font-family: 'DM Mono', monospace;
-  font-size: 38px; font-weight: 500; color: var(--text);
-  letter-spacing: -1px; min-height: 46px;
-}
+.rec-timer { font-family: 'DM Mono', monospace; font-size: 38px; font-weight: 500; color: var(--text); letter-spacing: -1px; min-height: 46px; }
 .rec-status { font-size: 13px; color: var(--text2); margin-top: 5px; }
 
-/* PROCESSING */
-.proc-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 18px;
-  margin-top: 14px; text-align: center; display: none;
-}
+/* TRANSCRIPT BOX */
+.transcript-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 16px; min-height: 60px; font-size: 13px; color: var(--text2); line-height: 1.6; display: none; }
+.transcript-box.show { display: block; }
+.transcript-label { font-size: 10px; font-weight: 600; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+
+.proc-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-top: 14px; text-align: center; display: none; }
 .proc-card.show { display: block; }
-.proc-spin {
-  width: 28px; height: 28px; border: 2px solid var(--border2);
-  border-top-color: var(--accent); border-radius: 50%;
-  animation: spin 0.75s linear infinite; margin: 0 auto 10px;
-}
+.proc-spin { width: 28px; height: 28px; border: 2px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 10px; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.proc-txt { font-size: 12px; color: var(--text2); letter-spacing: 0.3px; }
+.proc-txt { font-size: 12px; color: var(--text2); }
 
 /* LEADS PAGE */
-.leads-page { }
-.stats-row {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1px; background: var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.stat {
-  background: var(--bg); padding: 14px 10px; text-align: center;
-}
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
+.stat { background: var(--bg); padding: 14px 10px; text-align: center; }
 .stat-n { font-size: 24px; font-weight: 700; font-family: 'DM Mono', monospace; color: var(--text); line-height: 1; }
 .stat-n.c-green { color: var(--green); }
 .stat-n.c-accent { color: var(--accent); }
 .stat-l { font-size: 10px; color: var(--text3); margin-top: 4px; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 500; }
-
-.leads-list { }
-.empty-state {
-  text-align: center; padding: 56px 24px;
-  color: var(--text3); font-size: 13px; line-height: 2;
-}
+.empty-state { text-align: center; padding: 56px 24px; color: var(--text3); font-size: 13px; line-height: 2; }
 .empty-icon { font-size: 42px; margin-bottom: 8px; }
-
-.lead-card {
-  padding: 15px 20px;
-  border-bottom: 1px solid var(--border);
-  display: flex; gap: 13px; align-items: flex-start;
-  transition: background 0.15s;
-}
-.lead-card:active { background: var(--surface); }
-
-.score-dot {
-  width: 40px; height: 40px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 15px; font-weight: 700; font-family: 'DM Mono', monospace;
-  flex-shrink: 0;
-}
+.lead-card { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; gap: 13px; align-items: flex-start; }
+.score-dot { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; font-family: 'DM Mono', monospace; flex-shrink: 0; }
 .s5 { background: rgba(0,229,160,0.1); color: var(--green); }
 .s4 { background: rgba(0,229,160,0.06); color: #4dffbe; }
 .s3 { background: rgba(255,179,66,0.1); color: var(--amber); }
 .s2 { background: rgba(255,77,106,0.08); color: #ff7a8a; }
 .s1 { background: rgba(255,77,106,0.05); color: #ffaaaa; }
-
 .lead-body { flex: 1; min-width: 0; }
 .lead-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
 .lead-co { font-size: 12px; color: var(--text2); margin-bottom: 5px; }
 .lead-notes { font-size: 12px; color: var(--text2); line-height: 1.5; }
 .lead-time { font-size: 10px; color: var(--text3); margin-top: 4px; font-family: 'DM Mono', monospace; }
-
-/* EXPORT BAR */
-.export-bar {
-  padding: 16px 20px; border-top: 1px solid var(--border);
-  background: var(--bg); flex-shrink: 0;
-}
-.export-btn {
-  width: 100%;
-  background: linear-gradient(135deg, var(--accent2), var(--accent));
-  color: #fff; border: none; border-radius: var(--radius-sm);
-  padding: 15px; font-size: 14px; font-weight: 600;
-  font-family: 'DM Sans', sans-serif; cursor: pointer;
-  letter-spacing: 0.2px; transition: opacity 0.2s;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-}
+.del-btn { background: transparent; border: none; color: var(--text3); font-size: 18px; cursor: pointer; padding: 4px 8px; flex-shrink: 0; line-height: 1; transition: color 0.15s; }
+.del-btn:hover { color: var(--red); }
+.export-bar { padding: 16px 20px; border-top: 1px solid var(--border); background: var(--bg); flex-shrink: 0; }
+.export-btn { width: 100%; background: linear-gradient(135deg, var(--accent2), var(--accent)); color: #fff; border: none; border-radius: var(--radius-sm); padding: 15px; font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.2s; }
 .export-btn:active { opacity: 0.85; }
 .export-btn:disabled { opacity: 0.35; cursor: default; }
 
 /* SETTINGS */
 .settings-page { padding: 24px 20px; }
-.s-label {
-  font-size: 10px; font-weight: 600; color: var(--text3);
-  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;
-}
-.s-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); overflow: hidden; margin-bottom: 20px;
-}
-.s-row {
-  padding: 14px 16px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-}
+.s-label { font-size: 10px; font-weight: 600; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+.s-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
+.s-row { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 .s-row:last-child { border-bottom: none; }
 .s-row-label { font-size: 13px; color: var(--text); }
 .s-row-val { font-size: 13px; color: var(--text2); font-family: 'DM Mono', monospace; }
 .s-del { background: transparent; border: 1px solid rgba(255,77,106,0.3); color: var(--red); font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 5px 13px; border-radius: 7px; cursor: pointer; }
-.inp-wrap {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); display: flex; align-items: center;
-  margin-bottom: 6px; overflow: hidden;
-}
-.inp-wrap input {
-  flex: 1; background: transparent; border: none; outline: none;
-  color: var(--text); font-family: 'DM Mono', monospace;
-  font-size: 12px; padding: 13px 14px; direction: ltr; text-align: left;
-}
+.inp-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); display: flex; align-items: center; margin-bottom: 6px; overflow: hidden; }
+.inp-wrap input { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 13px 14px; }
 .inp-wrap input::placeholder { color: var(--text3); }
-.inp-eye { padding: 0 13px; color: var(--text3); cursor: pointer; font-size: 16px; }
-.inp-conf input {
-  font-family: 'DM Sans', sans-serif; font-size: 13px;
-}
 .s-hint { font-size: 11px; color: var(--text3); line-height: 1.6; margin-bottom: 20px; }
 .s-version { font-size: 11px; color: var(--text3); text-align: center; line-height: 1.8; }
-
-/* TOAST */
-.toast {
-  position: fixed; bottom: 88px; left: 50%; transform: translateX(-50%) translateY(10px);
-  background: var(--surface2); border: 1px solid var(--border2);
-  color: var(--text); font-size: 12px; font-weight: 500;
-  padding: 9px 18px; border-radius: 20px;
-  opacity: 0; transition: all 0.25s; pointer-events: none;
-  white-space: nowrap; z-index: 999;
-  font-family: 'DM Sans', sans-serif;
-}
+.toast { position: fixed; bottom: 88px; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--surface2); border: 1px solid var(--border2); color: var(--text); font-size: 12px; font-weight: 500; padding: 9px 18px; border-radius: 20px; opacity: 0; transition: all 0.25s; pointer-events: none; white-space: nowrap; z-index: 999; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
@@ -289,14 +143,10 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
   <div class="topbar">
     <div class="logo">
       <div class="logo-mark">CZ</div>
-      <div>
-        <div class="logo-text">Lead Scanner</div>
-        <div class="logo-sub">Conference Intelligence</div>
-      </div>
+      <div><div class="logo-text">Lead Scanner</div><div class="logo-sub">Conference Intelligence</div></div>
     </div>
     <div class="badge" id="topBadge">0 leads</div>
   </div>
-
   <div class="tabs">
     <div class="tab active" id="tab-record" onclick="switchTab('record')">Record</div>
     <div class="tab" id="tab-leads" onclick="switchTab('leads')">Leads</div>
@@ -312,7 +162,6 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
           "First name: <span>[first]</span>. Last name: <span>[last]</span>. Company: <span>[company]</span>. Job title: <span>[title]</span>. Lead score: <span>[1–5]</span>. What we discussed: <span>[notes]</span>."
         </div>
       </div>
-
       <div class="rec-center">
         <div class="rec-outer" id="recOuter">
           <button class="rec-btn" id="recBtn" onclick="toggleRecord()">
@@ -323,10 +172,13 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
         <div class="rec-timer" id="recTimer"></div>
         <div class="rec-status" id="recStatus">Tap to start recording</div>
       </div>
-
+      <div class="transcript-box" id="transcriptBox">
+        <div class="transcript-label">Transcript</div>
+        <div id="transcriptText"></div>
+      </div>
       <div class="proc-card" id="procCard">
         <div class="proc-spin"></div>
-        <div class="proc-txt" id="procTxt">Transcribing audio...</div>
+        <div class="proc-txt" id="procTxt">Extracting lead info...</div>
       </div>
     </div>
   </div>
@@ -338,11 +190,9 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
       <div class="stat"><div class="stat-n c-green" id="sHot">0</div><div class="stat-l">Hot (4–5)</div></div>
       <div class="stat"><div class="stat-n c-accent" id="sToday">0</div><div class="stat-l">Today</div></div>
     </div>
-    <div class="leads-list" id="leadsList"></div>
+    <div id="leadsList"></div>
     <div class="export-bar">
-      <button class="export-btn" id="exportBtn" onclick="exportExcel()">
-        ⬇ Export to Excel
-      </button>
+      <button class="export-btn" id="exportBtn" onclick="exportExcel()" disabled>⬇ Export to Excel</button>
     </div>
   </div>
 
@@ -350,42 +200,24 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
   <div class="page" id="page-settings">
     <div class="settings-page">
       <div class="s-label">Conference Name</div>
-      <div class="inp-wrap inp-conf" style="margin-bottom:6px">
+      <div class="inp-wrap" style="margin-bottom:6px">
         <input type="text" id="confInput" placeholder="e.g. AWS re:Invent 2025" oninput="saveConf()">
       </div>
-      <div class="s-hint" style="margin-bottom:20px">Used as the filename when exporting Excel.</div>
-
-      <div class="s-label">API Key (shared)</div>
-      <div class="inp-wrap">
-        <input type="password" id="apiInput" placeholder="sk-ant-api03-..." oninput="saveKey()">
-        <div class="inp-eye" onclick="toggleVis()">👁</div>
-      </div>
-      <div class="s-hint">Stored only on this device. All team members use the same key.</div>
-
+      <div class="s-hint">Used as the filename when exporting Excel.</div>
       <div class="s-card">
-        <div class="s-row">
-          <div class="s-row-label">Saved leads</div>
-          <div class="s-row-val" id="savedCnt">0</div>
-        </div>
-        <div class="s-row">
-          <div class="s-row-label">Clear all data</div>
-          <button class="s-del" onclick="clearAll()">Delete</button>
-        </div>
+        <div class="s-row"><div class="s-row-label">Saved leads</div><div class="s-row-val" id="savedCnt">0</div></div>
+        <div class="s-row"><div class="s-row-label">Clear all data</div><button class="s-del" onclick="clearAll()">Delete all</button></div>
       </div>
-
-      <div class="s-version">CloudZone Lead Scanner v1.0<br>Powered by Claude AI</div>
+      <div class="s-version">CloudZone Lead Scanner v2.0<br>Powered by Claude AI</div>
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-const API_KEY = 'sk-ant-api03-l9RSoLRYEvxAC6iiQZkyUrL9SMe0yCWb5wNDN2ylv2CPxS70w_ONuUphCvmU_KYKGvX84ySxSDUt-LLLr-psSA-ecKJ8gAA';
-
-let leads = JSON.parse(localStorage.getItem('cz_leads_v1') || '[]');
-let isRec = false, mediaRec, chunks = [], timerInt, secs = 0;
+let leads = JSON.parse(localStorage.getItem('cz_leads_v2') || '[]');
+let isRec = false, recognition = null, timerInt, secs = 0, transcript = '';
 
 function switchTab(name) {
   ['record','leads','settings'].forEach(t => {
@@ -394,39 +226,59 @@ function switchTab(name) {
   });
   if (name==='leads') renderLeads();
   if (name==='settings') {
-    document.getElementById('apiInput').value = localStorage.getItem('cz_key') || API_KEY;
     document.getElementById('confInput').value = localStorage.getItem('cz_conf') || '';
     document.getElementById('savedCnt').textContent = leads.length;
   }
 }
 
-function getKey() { return localStorage.getItem('cz_key') || API_KEY; }
-function saveKey() { localStorage.setItem('cz_key', document.getElementById('apiInput').value.trim()); }
 function saveConf() { localStorage.setItem('cz_conf', document.getElementById('confInput').value.trim()); }
-function toggleVis() {
-  const i = document.getElementById('apiInput');
-  i.type = i.type==='password' ? 'text' : 'password';
+
+function toggleRecord() {
+  if (isRec) { stopRecording(); return; }
+  startRecording();
 }
 
-async function toggleRecord() {
-  if (isRec) { isRec=false; clearInterval(timerInt); mediaRec.stop(); return; }
-  const key = getKey();
-  if (!key || key.includes('PASTE')) { toast('Set your API key in Settings'); switchTab('settings'); return; }
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    chunks = [];
-    mediaRec = new MediaRecorder(stream);
-    mediaRec.ondataavailable = e => chunks.push(e.data);
-    mediaRec.onstop = () => { stream.getTracks().forEach(t=>t.stop()); process(new Blob(chunks,{type:'audio/webm'})); };
-    mediaRec.start();
-    isRec = true; secs = 0;
-    setUI('recording');
-    timerInt = setInterval(() => {
-      secs++;
-      document.getElementById('recTimer').textContent =
-        String(Math.floor(secs/60)).padStart(2,'0')+':'+String(secs%60).padStart(2,'0');
-    }, 1000);
-  } catch(e) { toast('Microphone access denied'); }
+function startRecording() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) { toast('Speech recognition not supported on this browser. Use Chrome.'); return; }
+
+  transcript = '';
+  recognition = new SpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.continuous = true;
+  recognition.interimResults = true;
+
+  recognition.onresult = (e) => {
+    let interim = '';
+    let final = '';
+    for (let i = 0; i < e.results.length; i++) {
+      if (e.results[i].isFinal) final += e.results[i][0].transcript + ' ';
+      else interim += e.results[i][0].transcript;
+    }
+    transcript = final;
+    const box = document.getElementById('transcriptBox');
+    box.classList.add('show');
+    document.getElementById('transcriptText').textContent = final + interim;
+  };
+
+  recognition.onerror = (e) => { toast('Mic error: ' + e.error); setUI('idle'); isRec = false; };
+  recognition.onend = () => { if (isRec) { isRec = false; processTranscript(transcript); } };
+
+  recognition.start();
+  isRec = true; secs = 0;
+  setUI('recording');
+  timerInt = setInterval(() => {
+    secs++;
+    const m = String(Math.floor(secs/60)).padStart(2,'0');
+    const s = String(secs%60).padStart(2,'0');
+    document.getElementById('recTimer').textContent = m+':'+s;
+  }, 1000);
+}
+
+function stopRecording() {
+  isRec = false;
+  clearInterval(timerInt);
+  if (recognition) recognition.stop();
 }
 
 function setUI(state) {
@@ -435,49 +287,69 @@ function setUI(state) {
   const icon = document.getElementById('recIcon');
   const lbl = document.getElementById('recLbl');
   const status = document.getElementById('recStatus');
-  btn.className = 'rec-btn ' + (state==='idle'?'':state);
-  outer.className = 'rec-outer ' + (state==='idle'?'':state);
+  btn.className = 'rec-btn' + (state==='idle' ? '' : ' '+state);
+  outer.className = 'rec-outer' + (state==='idle' ? '' : ' '+state);
   if (state==='recording') { icon.textContent='⏹'; lbl.textContent='STOP'; status.textContent='Recording... tap to stop'; }
   else if (state==='processing') { icon.textContent='⌛'; lbl.textContent=''; status.textContent='Processing...'; document.getElementById('recTimer').textContent=''; document.getElementById('procCard').classList.add('show'); }
   else { icon.textContent='🎙'; lbl.textContent='Record'; status.textContent='Tap to start recording'; document.getElementById('recTimer').textContent=''; document.getElementById('procCard').classList.remove('show'); }
 }
 
-const steps = ['Transcribing audio...','Extracting lead data...','Analyzing intent...','Saving lead...'];
-
-async function process(blob) {
+async function processTranscript(text) {
+  if (!text || text.trim().length < 3) { toast('No speech detected. Try again.'); setUI('idle'); return; }
   setUI('processing');
-  let si=0;
-  const interval = setInterval(()=>{ document.getElementById('procTxt').textContent=steps[si++%steps.length]; },1100);
+
   try {
-    const b64 = await new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(blob); });
-    const resp = await fetch('/.netlify/functions/claude',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
+    const resp = await fetch('/.netlify/functions/claude', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        model:'claude-sonnet-4-20250514', max_tokens:600,
-        messages:[{role:'user',content:[
-          {type:'text',text:`You are a sales assistant at a B2B tech conference. Extract lead info from this voice recording and return ONLY a JSON object, no markdown, no explanation:
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 500,
+        messages: [{
+          role: 'user',
+          content: `You are a sales assistant at a B2B tech conference. Extract lead info from this transcript and return ONLY a valid JSON object with no markdown, no explanation, nothing else:
 {"firstName":"","lastName":"","company":"","jobTitle":"","score":3,"notes":""}
-score: 5=very hot, 4=interested, 3=neutral, 2=cold, 1=not relevant. If a field is unclear use empty string.`},
-          {type:'document',source:{type:'base64',media_type:'audio/webm',data:b64}}
-        ]}]
+
+Rules:
+- score: 5=very hot, 4=interested, 3=neutral, 2=cold, 1=not relevant
+- If a field is not mentioned, use empty string ""
+- score must be a number, not a string
+
+Transcript: "${text.trim()}"`
+        }]
       })
     });
-    clearInterval(interval);
+
     const data = await resp.json();
-    const raw = (data.content?.[0]?.text||'{}').replace(/```json|```/g,'').trim();
+    const raw = (data.content?.[0]?.text || '').replace(/```json|```/g,'').trim();
+
     let lead;
-    try { lead=JSON.parse(raw); } catch { lead={firstName:'Parse error',lastName:'',company:'',jobTitle:'',score:3,notes:raw}; }
-    lead.time = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    try {
+      lead = JSON.parse(raw);
+    } catch(e) {
+      toast('Could not parse response. Please try again.');
+      setUI('idle');
+      return;
+    }
+
+    lead.score = parseInt(lead.score) || 3;
+    lead.time = new Date().toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
     lead.date = new Date().toLocaleDateString('en-US');
     lead.conf = localStorage.getItem('cz_conf') || '';
+    lead.transcript = text.trim();
+
     leads.push(lead);
-    localStorage.setItem('cz_leads_v1', JSON.stringify(leads));
+    localStorage.setItem('cz_leads_v2', JSON.stringify(leads));
     updateBadge();
-    toast('✓ ' + [lead.firstName,lead.lastName].filter(Boolean).join(' ') + ' saved');
+
+    const name = [lead.firstName, lead.lastName].filter(Boolean).join(' ') || 'Lead';
+    toast('✓ ' + name + ' saved!');
+
+    document.getElementById('transcriptBox').classList.remove('show');
+    document.getElementById('transcriptText').textContent = '';
+
   } catch(e) {
-    clearInterval(interval);
-    toast('Error: ' + (e.message||'Try again'));
+    toast('Error: ' + e.message);
   }
   setUI('idle');
 }
@@ -485,7 +357,7 @@ score: 5=very hot, 4=interested, 3=neutral, 2=cold, 1=not relevant. If a field i
 function deleteLead(idx) {
   if (!confirm('Delete this lead?')) return;
   leads.splice(idx, 1);
-  localStorage.setItem('cz_leads_v1', JSON.stringify(leads));
+  localStorage.setItem('cz_leads_v2', JSON.stringify(leads));
   updateBadge();
   renderLeads();
   toast('Lead deleted');
@@ -498,78 +370,70 @@ function renderLeads() {
   document.getElementById('sToday').textContent = leads.filter(l=>l.date===today).length;
   const el = document.getElementById('leadsList');
   if (!leads.length) {
-    el.innerHTML='<div class="empty-state"><div class="empty-icon">\u{1F4EB}</div>No leads recorded yet.<br>Head to Record tab to start.</div>';
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div>No leads yet.<br>Go to Record tab to start.</div>';
     document.getElementById('exportBtn').disabled = true;
     return;
   }
-  const reversed = [...leads].map((l,i)=>({...l,_idx:i})).reverse();
-  el.innerHTML = reversed.map(l=>{
-    const sc = Math.max(1,Math.min(5,parseInt(l.score)||3));
-    const cls = 's'+sc;
-    const name = [l.firstName,l.lastName].filter(Boolean).join(' ')||'—';
-    const meta = [l.jobTitle,l.company].filter(Boolean).join(' · ')||'—';
+  el.innerHTML = [...leads].map((l,i) => ({...l, _i: i})).reverse().map(l => {
+    const sc = Math.max(1, Math.min(5, parseInt(l.score)||3));
+    const name = [l.firstName, l.lastName].filter(Boolean).join(' ') || '—';
+    const meta = [l.jobTitle, l.company].filter(Boolean).join(' · ') || '—';
     return `<div class="lead-card">
-      <div class="score-dot ${cls}">${sc}</div>
+      <div class="score-dot s${sc}">${sc}</div>
       <div class="lead-body">
         <div class="lead-name">${name}</div>
         <div class="lead-co">${meta}</div>
-        ${l.notes?`<div class="lead-notes">${l.notes}</div>`:''}
-        <div class="lead-time">${l.time||''} ${l.conf?'· '+l.conf:''}</div>
+        ${l.notes ? `<div class="lead-notes">${l.notes}</div>` : ''}
+        <div class="lead-time">${l.time||''} ${l.conf ? '· '+l.conf : ''}</div>
       </div>
-      <button onclick="deleteLead(${l._idx})" style="background:transparent;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:4px 10px;flex-shrink:0;line-height:1;" title="Delete">&#x2715;</button>
+      <button class="del-btn" onclick="deleteLead(${l._i})">✕</button>
     </div>`;
   }).join('');
   document.getElementById('exportBtn').disabled = false;
 }
 
 function updateBadge() {
-  document.getElementById('topBadge').textContent = leads.length + (leads.length===1?' lead':' leads');
+  const n = leads.length;
+  document.getElementById('topBadge').textContent = n + (n===1 ? ' lead' : ' leads');
 }
 
 function exportExcel() {
   if (!leads.length) { toast('No leads to export'); return; }
-  console.log('Exporting leads:', JSON.stringify(leads));
-  const rows = leads.map(l=>{
-    console.log('Lead row:', l);
-    return {
-      'First Name': String(l.firstName||'undefined'),
-      'Last Name': String(l.lastName||'undefined'),
-      'Company': String(l.company||'undefined'),
-      'Job Title': String(l.jobTitle||'undefined'),
-      'Lead Score': String(l.score||'undefined'),
-      'Discussion Notes': String(l.notes||'undefined'),
-      'Time': String(l.time||'undefined'),
-      'Date': String(l.date||'undefined'),
-      'Conference': String(l.conf||'undefined')
-    };
-  });
-  console.log('Rows to export:', rows);
-  try {
-    const ws = XLSX.utils.json_to_sheet(rows);
-    ws['!cols'] = [14,14,20,20,10,40,10,12,20].map(w=>({wch:w}));
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Leads');
-    const conf = (localStorage.getItem('cz_conf')||'Conference').replace(/\s+/g,'_');
-    const date = new Date().toLocaleDateString('en-US').replace(/\//g,'-');
-    const filename = `CZ_Leads_${conf}_${date}.xlsx`;
-    console.log('Saving as:', filename);
-    XLSX.writeFile(wb, filename);
-    toast('Excel downloaded: ' + leads.length + ' leads ✓');
-  } catch(e) {
-    console.error('Export error:', e);
-    toast('Export error: ' + e.message);
-  }
+  const rows = leads.map(l => ({
+    'First Name': l.firstName || '',
+    'Last Name': l.lastName || '',
+    'Company': l.company || '',
+    'Job Title': l.jobTitle || '',
+    'Lead Score': l.score || '',
+    'Discussion Notes': l.notes || '',
+    'Transcript': l.transcript || '',
+    'Time': l.time || '',
+    'Date': l.date || '',
+    'Conference': l.conf || ''
+  }));
+  const ws = XLSX.utils.json_to_sheet(rows);
+  ws['!cols'] = [14,14,20,20,10,40,50,10,12,20].map(w=>({wch:w}));
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Leads');
+  const conf = (localStorage.getItem('cz_conf')||'Conference').replace(/\s+/g,'_');
+  const date = new Date().toLocaleDateString('en-US').replace(/\//g,'-');
+  XLSX.writeFile(wb, `CZ_Leads_${conf}_${date}.xlsx`);
+  toast('Excel downloaded — ' + leads.length + ' leads ✓');
 }
 
 function clearAll() {
-  if (!confirm('Delete all ' + leads.length + ' leads? This cannot be undone.')) return;
-  leads = []; localStorage.removeItem('cz_leads_v1'); updateBadge(); toast('All leads cleared');
+  if (!confirm('Delete ALL ' + leads.length + ' leads? This cannot be undone.')) return;
+  leads = [];
+  localStorage.removeItem('cz_leads_v2');
+  updateBadge();
+  renderLeads();
+  toast('All leads cleared');
 }
 
 function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2600);
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
 updateBadge();
